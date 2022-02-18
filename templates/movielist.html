@@ -116,10 +116,12 @@
 						<option value="popularity">Distance Descending</option>
 					</select>
 				</div>
+
+				{% if result %}
 				{% for i in result %}
 
 				<div class="movie-item-style-2">
-					<img src="{% static 'images/uploads/mv1.jpg' %}" alt="" width="285" height="437">
+					<img src="{% static 'images/uploads/mv2.jpg' %}" alt="" width="285" height="437">
 					<div class="mv-item-infor">
 						<h6><a href="#">{{ i.movie }}</a></h6>
 						<p class="rate"><i class="ion-android-star"></i><span></span> {{i.rating}}/10</p>
@@ -128,6 +130,17 @@
 				</div>
 
 				{% endfor %}
+
+				{% else %}
+
+				<div class="movie-item-style-2">
+					<img src="{% static 'images/nivo/loading@2x.gif' %}" alt="" width="285" height="437">
+					<div class="mv-item-infor">
+						<p class="run-time"> Could not be inferred for the movie <span> {{ search }} </span>    
+					</div>
+				</div>
+
+				{% endif %}
 
 
 			</div>
