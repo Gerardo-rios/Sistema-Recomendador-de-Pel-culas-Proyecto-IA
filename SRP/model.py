@@ -2,6 +2,7 @@ import os
 import time
 import gc
 import argparse
+import random
 #from django.shortcuts import render
 # data science imports
 import pandas as pd
@@ -207,11 +208,14 @@ class KnnRecommender:
         reverse_hashmap = {v: k for k, v in hashmap.items()}
 
         results = []
+
+        
         print('Recommendations for {}:'.format(fav_movie))
         for i, (idx, dist) in enumerate(raw_recommends):
             print('{0}: {1}, with distance '
                   'of {2}'.format(i+1, reverse_hashmap[idx], dist))
-            results.append( {"movie" :reverse_hashmap[idx], "distance": dist})
+            rate = random.randint(7, 10)
+            results.append( {"movie" :reverse_hashmap[idx], "distance": dist, "rating": rate})
 
         
         return results
@@ -248,9 +252,11 @@ def recomendation(request):
     # set params
     recommender.set_filter_params(50, 50)
     recommender.set_model_params(20, 'brute', 'cosine', -1)
-    # make recommendations
-    context = { "result" : recommender.make_recommendations(movie_name, top_n), "search" : movie_name}
+
     
-    return render(request, "../templates/home_Page.html", context)
+
+    # make recommendations
+
+    return render(request, "../templates/movielist.html", context = { "result" : recommender.make_recommendations(movie_name, top_n), "search" : movie_name})
   else: 
     return render(request, "../templates/home_Page.html")
