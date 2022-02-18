@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homePage, name="home_page"),
     path('recomendacion/', model.recomendation, name="recomendation"),
+    path('movies_list', views.listMovies, name="list_movies"),
 ] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
