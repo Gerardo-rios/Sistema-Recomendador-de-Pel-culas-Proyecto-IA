@@ -1,5 +1,0 @@
-joblib
-pandas
-scipy
-sklearn
-fuzzywuzzy
