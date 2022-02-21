@@ -12,7 +12,7 @@
 <!-- movielist07:38-->
 <head>
 	<!-- Basic need -->
-	<title>Open Pediatrics</title>
+	<title>List inferred</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -121,7 +121,7 @@
 				{% for i in result %}
 
 				<div class="movie-item-style-2">
-					<img src="{% static 'images/uploads/mv2.jpg' %}" alt="" width="285" height="437">
+					<img src="{{ i.url_image }}" alt="" width="285" height="437">
 					<div class="mv-item-infor">
 						<h6><a href="#">{{ i.movie }}</a></h6>
 						<p class="rate"><i class="ion-android-star"></i><span></span> {{i.rating}}/10</p>

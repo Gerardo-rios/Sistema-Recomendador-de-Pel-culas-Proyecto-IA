@@ -1,4 +1,5 @@
 import os
+from re import I
 import time
 import gc
 import argparse
@@ -14,7 +15,11 @@ from django.shortcuts import render
 
 # utils import
 from fuzzywuzzy import fuzz
-
+from bs4 import BeautifulSoup
+import urllib.request
+from googlesearch import search
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 class KnnRecommender:
     """
@@ -209,13 +214,28 @@ class KnnRecommender:
 
         results = []
 
-        
         print('Recommendations for {}:'.format(fav_movie))
         for i, (idx, dist) in enumerate(raw_recommends):
             print('{0}: {1}, with distance '
                   'of {2}'.format(i+1, reverse_hashmap[idx], dist))
             rate = random.randint(7, 10)
-            results.append( {"movie" :reverse_hashmap[idx], "distance": dist, "rating": rate})
+            
+            query = str(reverse_hashmap[idx]+"cartel")
+            for i in search(query, start=0, stop=3, pause=0):
+                url = i
+            try:
+                html = urllib.request.urlopen(url)
+            except urllib.error.HTTPError as e:
+                continue
+
+            soup = BeautifulSoup(html, 'lxml')
+            
+            url_img = soup.find('img')
+            if url_img is not None:
+                carteles = url_img.get('src')
+            else: 
+                carteles = ""
+            results.append( {"movie" :reverse_hashmap[idx], "distance": dist, "rating": rate, "url_image": carteles})
 
         
         return results
