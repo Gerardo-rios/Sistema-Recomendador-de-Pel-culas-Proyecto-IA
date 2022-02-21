@@ -20,6 +20,7 @@ import urllib.request
 from googlesearch import search
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
+from pexels_api import API
 
 class KnnRecommender:
     """
@@ -219,22 +220,9 @@ class KnnRecommender:
             print('{0}: {1}, with distance '
                   'of {2}'.format(i+1, reverse_hashmap[idx], dist))
             rate = random.randint(7, 10)
-            
-            query = str(reverse_hashmap[idx]+"cartel")
-            for i in search(query, start=0, stop=3, pause=0):
-                url = i
-            try:
-                html = urllib.request.urlopen(url)
-            except urllib.error.HTTPError as e:
-                continue
 
-            soup = BeautifulSoup(html, 'lxml')
-            
-            url_img = soup.find('img')
-            if url_img is not None:
-                carteles = url_img.get('src')
-            else: 
-                carteles = ""
+            carteles = get_photos(reverse_hashmap[idx] + " " + "movie")
+
             results.append( {"movie" :reverse_hashmap[idx], "distance": dist, "rating": rate, "url_image": carteles})
 
         
@@ -272,11 +260,22 @@ def recomendation(request):
     # set params
     recommender.set_filter_params(50, 50)
     recommender.set_model_params(20, 'brute', 'cosine', -1)
-
-    
-
     # make recommendations
 
     return render(request, "../templates/movielist.html", context = { "result" : recommender.make_recommendations(movie_name, top_n), "search" : movie_name})
   else: 
     return render(request, "../templates/home_Page.html")
+
+def get_photos(name_movie):
+    PEXELS_API_KEY = '563492ad6f91700001000001de92f9aa64aa4cf6a0d581b8071bd3a6'
+    # Create API object
+    api = API(PEXELS_API_KEY)
+    # Search five 'kitten' photos
+    api.search(name_movie, page=1, results_per_page=5)
+    # Get photo entries
+    photos = api.get_entries()
+    # Loop the five photos
+    cartel = ""
+    for photo in photos:
+        cartel = photo.tiny
+    return cartel
