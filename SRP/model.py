@@ -15,11 +15,7 @@ from django.shortcuts import render
 
 # utils import
 from fuzzywuzzy import fuzz
-from bs4 import BeautifulSoup
-import urllib.request
-from googlesearch import search
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
+
 from pexels_api import API
 
 class KnnRecommender:

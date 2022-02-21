@@ -19,9 +19,4 @@ sklearn==0.0
 sqlparse==0.4.2
 threadpoolctl==3.1.0
 whitenoise==6.0.0
-beautifulsoup4==2.3.1
-bs4==0.0.1
-lxml==4.8.0
-google==3.0.0
-bs4==2.3.1
 pexels-api==1.0.1
